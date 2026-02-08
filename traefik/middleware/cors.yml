@@ -1,0 +1,24 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: cors
+  labels:
+    app.kubernetes.io/name: traefik
+spec:
+  headers:
+    addVaryHeader: true
+    accessControlAllowMethods:
+      - GET
+      - PUT
+      - POST
+      - PATCH
+      - DELETE
+      - OPTIONS
+      - HEAD
+    accessControlAllowHeaders: "*"
+    accessControlAllowCredentials: true
+    accessControlAllowOriginList:
+      - https://home.starsystem.dev
+      - https://photos.starsystem.dev
+      - https://cloud.starsystem.dev
+    accessControlMaxAge: 100

@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: local-path-provisioner
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: local-path-provisioner
+  ingress: []
+  egress: []
+  policyTypes:
+    - Ingress
+    - Egress

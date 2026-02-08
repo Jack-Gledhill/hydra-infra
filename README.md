@@ -1,32 +1,27 @@
-# Hydra
+# Hydra Infrastructure
 
-Hydra is Constellation's resident Kubernetes cluster. 
-It runs the majority of Constellation's software stack, acting as the general compute resource for the system.
+This repository contains ArgoCD Applications for the core infrastructure of Hydra.
+New Applications added to `applications/` will be deployed automatically to the cluster under the `infrastructure` Project.
+See [Jack-Gledhill/hydra-bootstrap](https://github.com/Jack-Gledhill/hydra-bootstrap) for the ArgoCD manifests that bootstrap this repository onto a Kubernetes cluster.
 
-## Startup Order
+## Sync Waves
 
-1. MetalLB
-2. NFS Provisioner
-3. Reloader
-4. Sealed Secrets
-5. Cert Manager
-6. Traefik
-7. Local Path Provisioner
-8. CNPG Operator
-9. Authentik
-10. Applications
+In short, Sync Waves control the order in which manifests are applied to the cluster - with lower numbered waves being applied before higher numbered waves.
+See [the ArgoCD documentation](https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/) for more information on Sync Waves.
 
-## Infrastructure
+Wave 0:
 
-These deployments are critical to the cluster's operation. 
-It includes services like:
+- Kube State Metrics
+- MetalLB
+- NFS CSI
+- Node Exporter
+- Local Path Provisioner
+- Reloader
+- Sealed Secrets
 
-- [Traefik](infrastructure/traefik/README.md), the cluster's ingress controller
-- [MetalLB](infrastructure/metallb/README.md), which provides virtual IPs via ARP to LoadBalancer services
-- [Cert Manager](infrastructure/cert-manager/README.md), which issues SSL certificates for the cluster's ingress routes
-- [Sealed Secrets](infrastructure/sealed-secrets/README.md), which allows Kubernetes Secrets to be encrypted while stored in a Git repository
+Wave 1:
 
-## Applications
-
-These deployments are not critical to the cluster's operation. 
-Services like Prometheus exporters, Grafana and other monitoring tools, while important to the cluster, are not critical infrastructure and so fall under the applications category.
+- Cert Manager
+- CloudNative Postgres
+- Prometheus Operator
+- Traefik

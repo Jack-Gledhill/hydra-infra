@@ -1,0 +1,13 @@
+# Example file, DO NOT USE
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: database-example
+  namespace: cnpg-system
+spec:
+  ensure: present # or absent
+  databaseReclaimPolicy: delete # or retain
+  name: example
+  owner: example
+  cluster:
+    name: cluster

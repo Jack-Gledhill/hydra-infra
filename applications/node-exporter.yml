@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-exporter
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: node-exporter
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infrastructure
+  destination:
+    namespace: prometheus-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+  source:
+    chart: prometheus-node-exporter
+    repoURL: https://prometheus-community.github.io/helm-charts
+    helm:
+      valuesObject:
+        prometheus:
+          monitor:
+            enabled: true
+        resources:
+          requests:
+            cpu: 10m
+            memory: 30Mi
+          limits:
+            memory: 50Mi
+        networkPolicy:
+          enabled: true

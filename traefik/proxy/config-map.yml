@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-config
+data:
+  traefik.yml: |-
+    global:
+      sendAnonymousUsage: false
+    
+    log:
+      level: ERROR
+    
+    api:
+      dashboard: true
+      disableDashboardAd: true
+      insecure: true
+    
+    ping:
+      terminatingStatusCode: 503
+    
+    metrics:
+      addInternals: true
+      prometheus:
+        addEntryPointsLabels: true
+        addRoutersLabels: true
+        addServicesLabels: true
+    
+    providers:
+      kubernetesIngress:
+        allowExternalNameServices: true
+        ingressClass: traefik
+        ingressEndpoint:
+          publishedService: ingress-system/traefik-proxy
+      kubernetesCRD:
+        allowCrossNamespace: true
+    
+    entryPoints:
+      web:
+        address: ":80"
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+        observability:
+          accessLogs: false
+        forwardedHeaders:
+          insecure: false
+          trustedIPs:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            - fc00::/7
+        proxyProtocol:
+          insecure: false
+          trustedIPs:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            - fc00::/7
+      websecure:
+        address: ":443"
+        asDefault: true
+        # http:
+        #   middlewares:
+        #     - ingress-system-default@kubernetescrd
+        forwardedHeaders:
+          insecure: false
+          trustedIPs:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            - fc00::/7
+        proxyProtocol:
+          insecure: false
+          trustedIPs:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            - fc00::/7
+    
+    accessLog:
+      filePath: /logs/access.log
+      format: json
+      bufferingSize: 10 # Improves performance by writing logs in batches
+      addInternals: true
+      filters:
+        statusCodes:
+          - 200-299 # Successful requests
+          - 400-499 # Client errors
+      fields:
+        defaultMode: drop
+        # Keep only the fields that provide useful information
+        names:
+          # --- General metadata
+          StartLocal: keep
+          Overhead: keep
+          # --- Router and service chosen by Traefik
+          RouterName: keep
+          ServiceName: keep
+          # --- Details of the client
+          ClientAddr: keep
+          ClientUsername: keep
+          # --- Request details provided by client
+          RequestMethod: keep
+          RequestAddr: keep
+          RequestPath: keep
+          RequestContentSize: keep
+          # --- Response from backend
+          DownstreamStatus: keep
+        # Keep all headers, except for Authorization for security reasons
+        headers:
+          defaultMode: keep
+          names:
+            Authorization: drop

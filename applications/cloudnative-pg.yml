@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudnative-pg
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: cloudnative-pg
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infrastructure
+  destination:
+    namespace: cnpg-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/name: cloudnative-pg
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+  sources:
+    - chart: cnpg/cloudnative-pg
+      repoURL: https://cloudnative-pg.github.io/charts
+      helm:
+        valuesObject:
+          crds:
+            create: false
+          monitoring:
+            podMonitorEnabled: true
+          priorityClassName: system-cluster-critical
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              memory: 200Mi
+    - repoURL: https://github.com/Jack-Gledhill/hydra-infra.git
+      targetRevision: HEAD
+      path: cloudnative-pg
