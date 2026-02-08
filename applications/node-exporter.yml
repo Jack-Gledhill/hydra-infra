@@ -24,6 +24,7 @@ spec:
     repoURL: https://prometheus-community.github.io/helm-charts
     helm:
       valuesObject:
+        priorityClassName: system-node-critical
         prometheus:
           monitor:
             enabled: true
