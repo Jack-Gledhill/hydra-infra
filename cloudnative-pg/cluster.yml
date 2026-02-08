@@ -1,0 +1,38 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster
+  namespace: cnpg-system
+spec:
+  # See here for list of options: https://cloudnative-pg.io/documentation/current/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
+  description: Hydra's primary High Availability PostgreSQL cluster.
+  priorityClassName: system-cluster-critical
+  failoverDelay: 5s
+  instances: 5
+  minSyncReplicas: 1
+  maxSyncReplicas: 3
+  enablePDB: true
+  managed:
+    roles:
+#      - name: example
+#        passwordSecret:
+#           name: credentials-example
+#        login: true
+  primaryUpdateStrategy: unsupervised
+  storage:
+    storageClass: local
+    size: 10Gi
+  affinity:
+    enablePodAntiAffinity: true
+    podAntiAffinityType: required
+  postgresql:
+    parameters:
+      # Postgres docs recommend 25% of container memory
+      # See: https://www.postgresql.org/docs/current/runtime-config-resource.html
+      shared_buffers: 256MB
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      memory: 1Gi

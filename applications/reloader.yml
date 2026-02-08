@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reloader
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: reloader
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infrastructure
+  destination:
+    namespace: reloader-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/name: reloader
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+  source:
+    chart: stakater/reloader
+    repoURL: https://stakater.github.io/stakater-charts
+    helm:
+      valuesObject:
+        reloader:
+          autoReloadAll: true
+          isArgoRollouts: true
+          enableMetricsByNamespace: true
+          deployment:
+            priorityClassName: system-cluster-critical
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 256Mi
+            containerSecurityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+          podMonitor:
+            enabled: true
+          netpol:
+            enabled: true

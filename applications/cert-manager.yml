@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: cert-manager
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infrastructure
+  destination:
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/name: cert-manager
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+  sources:
+    - chart: cert-manager
+      repoURL: quay.io/jetstack
+      targetRevision: 1.19.3
+      helm:
+        valuesObject:
+          global:
+            priorityClassName: system-cluster-critical
+            rbac:
+              aggregateClusterRoles: false
+            leaderElection:
+              namespace: cert-manager
+          prometheus:
+            enabled: true
+            podMonitor:
+              enabled: true
+          enableCertificateOwnerRef: true
+          dns01RecursiveNameservers: 1.0.0.1:53,1.1.1.1:53
+          networkPolicy:
+            enabled: true
+          # --- Recommended High Availability settings
+          podDisruptionBudget:
+            enabled: true
+            minAvailable: 1
+          replicaCount: 2
+          webhook:
+            replicaCount: 3
+            podDisruptionBudget:
+              enabled: true
+              minAvailable: 1
+          cainjector:
+            replicaCount: 2
+            podDisruptionBudget:
+              enabled: true
+              minAvailable: 1
+    - repoURL: https://github.com/Jack-Gledhill/hydra-infra.git
+      targetRevision: HEAD
+      path: cert-manager

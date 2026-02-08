@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: metallb
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infrastructure
+  destination:
+    namespace: metallb-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/name: metallb
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: privileged
+        pod-security.kubernetes.io/warn: privileged
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+  sources:
+    - chart: metallb/metallb
+      repoURL: https://metallb.github.io/metallb
+      helm:
+        valuesObject:
+          crds:
+            enabled: false
+          prometheus:
+            rbacPrometheus: false
+            serviceMonitor:
+              enabled: true
+          controller:
+            priorityClassName: system-cluster-critical
+            resources:
+              requests:
+                cpu: 100m
+                memory: 50Mi
+              limits:
+                memory: 100Mi
+          speaker:
+            priorityClassName: system-cluster-critical
+            resources:
+              requests:
+                cpu: 100m
+                memory: 50Mi
+              limits:
+                memory: 100Mi
+          networkpolicies:
+            enabled: true
+    - repoURL: https://github.com/Jack-Gledhill/hydra-infra.git
+      targetRevision: HEAD
+      path: metallb

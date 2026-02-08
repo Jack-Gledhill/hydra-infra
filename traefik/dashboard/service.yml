@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-dashboard
+spec:
+  ports:
+    - name: internal
+      port: 8080
+      targetPort: 8080

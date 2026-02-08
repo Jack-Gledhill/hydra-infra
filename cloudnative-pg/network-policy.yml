@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cluster
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: cluster
+  ingress:
+    # Allow access to metrics and postgres ports
+    - ports:
+        - port: 8000
+        - port: 5432

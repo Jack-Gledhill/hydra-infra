@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local
+provisioner: rancher.io/local-path
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Delete
+parameters:
+  nodePath: /var/lib/local
+  pathPattern: "{{ .PVC.Namespace }}/{{ .PVC.Name }}/"

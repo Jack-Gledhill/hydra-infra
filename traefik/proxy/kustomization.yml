@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+labels:
+  - pairs:
+      app.kubernetes.io/name: traefik
+      app.kubernetes.io/component: proxy
+    includeTemplates: true
+    includeSelectors: true
+resources:
+  - network-policy.yml
+  - rbac.yml
+  - config-map.yml
+  - deployment.yml
+  - pod-disruption-budget.yml
+  - service.yml
