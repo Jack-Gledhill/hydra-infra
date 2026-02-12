@@ -8,7 +8,7 @@ data:
       sendAnonymousUsage: false
     
     log:
-      level: TRACE
+      level: ERROR
     
     api:
       dashboard: true
