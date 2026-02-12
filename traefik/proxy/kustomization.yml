@@ -7,7 +7,6 @@ labels:
     includeTemplates: true
     includeSelectors: true
 resources:
-  - network-policy.yml
   - rbac.yml
   - config-map.yml
   - deployment.yml
