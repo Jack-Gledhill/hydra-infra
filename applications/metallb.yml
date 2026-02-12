@@ -27,9 +27,9 @@ spec:
       - CreateNamespace=true
       - ServerSideApply=true
   sources:
-    - chart: metallb/metallb
+    - chart: metallb
       repoURL: https://metallb.github.io/metallb
-      targetRevision: 0.0.0
+      targetRevision: 0.15.3
       helm:
         valuesObject:
           crds:
