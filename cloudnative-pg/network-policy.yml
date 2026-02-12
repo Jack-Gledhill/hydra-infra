@@ -9,5 +9,6 @@ spec:
   ingress:
     # Allow access to metrics and postgres ports
     - ports:
+        - port: 9187
         - port: 8000
         - port: 5432
