@@ -60,7 +60,8 @@ data:
       websecure:
         address: ":443"
         asDefault: true
-        # http:
+        http:
+          tls: true
         #   middlewares:
         #     - ingress-system-default@kubernetescrd
         forwardedHeaders:
