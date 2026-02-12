@@ -10,6 +10,20 @@ spec:
     spec:
       priorityClassName: system-cluster-critical
       serviceAccountName: traefik
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - traefik
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - proxy
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: traefik
           image: traefik:v3.6
