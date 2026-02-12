@@ -13,7 +13,7 @@ spec:
   maxSyncReplicas: 3
   enablePDB: true
   managed:
-    roles:
+    roles: []
 #      - name: example
 #        passwordSecret:
 #           name: credentials-example
