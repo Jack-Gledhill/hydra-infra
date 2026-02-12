@@ -37,12 +37,10 @@ spec:
               namespace: cert-manager
           prometheus:
             enabled: true
-            podMonitor:
+            podmonitor:
               enabled: true
           enableCertificateOwnerRef: true
           dns01RecursiveNameservers: 1.0.0.1:53,1.1.1.1:53
-          networkPolicy:
-            enabled: true
           # --- Recommended High Availability settings
           podDisruptionBudget:
             enabled: true
@@ -50,6 +48,8 @@ spec:
           replicaCount: 2
           webhook:
             replicaCount: 3
+            networkPolicy:
+              enabled: true
             podDisruptionBudget:
               enabled: true
               minAvailable: 1
