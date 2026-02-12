@@ -5,10 +5,10 @@ metadata:
 spec:
   serviceAccountName: prometheus
   externalUrl: https://prometheus.hydra.starsystem.dev
-  serviceMonitorSelector: ""
-  serviceMonitorNamespaceSelector: ""
-  podMonitorSelector: ""
-  podMonitorNamespaceSelector: ""
+  serviceMonitorSelector: {}
+  serviceMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  podMonitorNamespaceSelector: {}
   resources:
     requests:
       cpu: 50m
