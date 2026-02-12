@@ -7,7 +7,7 @@ spec:
   # See here for list of options: https://cloudnative-pg.io/documentation/current/cloudnative-pg.v1/#postgresql-cnpg-io-v1-ClusterSpec
   description: Hydra's primary High Availability PostgreSQL cluster.
   priorityClassName: system-cluster-critical
-  failoverDelay: 5s
+  failoverDelay: 5
   instances: 5
   minSyncReplicas: 1
   maxSyncReplicas: 3
