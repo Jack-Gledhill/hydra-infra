@@ -5,7 +5,6 @@ labels:
       app.kubernetes.io/name: traefik
       app.kubernetes.io/component: dashboard
     includeTemplates: true
-    includeSelectors: true
 resources:
   - service.yml
   - ingress.yml
