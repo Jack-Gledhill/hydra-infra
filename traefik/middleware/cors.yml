@@ -15,7 +15,8 @@ spec:
       - DELETE
       - OPTIONS
       - HEAD
-    accessControlAllowHeaders: "*"
+    accessControlAllowHeaders:
+      - "*"
     accessControlAllowCredentials: true
     accessControlAllowOriginList:
       - https://home.starsystem.dev
