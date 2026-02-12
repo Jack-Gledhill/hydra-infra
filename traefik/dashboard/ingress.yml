@@ -4,7 +4,7 @@ metadata:
   name: traefik-dashboard
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    traefik.ingress.kubernetes.io/router.middlewares: ingress-system-basic-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-system-basic-auth@kubernetescrd
 spec:
   tls:
     - hosts:

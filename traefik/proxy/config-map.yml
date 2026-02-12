@@ -30,7 +30,7 @@ data:
         allowExternalNameServices: true
         ingressClass: traefik
         ingressEndpoint:
-          publishedService: ingress-system/traefik-proxy
+          publishedService: traefik-system/traefik-proxy
       kubernetesCRD:
         allowCrossNamespace: true
     
