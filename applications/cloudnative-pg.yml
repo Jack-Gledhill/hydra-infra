@@ -26,6 +26,7 @@ spec:
   sources:
     - chart: cnpg/cloudnative-pg
       repoURL: https://cloudnative-pg.github.io/charts
+      targetRevision: 0.27.1
       helm:
         valuesObject:
           crds:

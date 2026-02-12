@@ -25,7 +25,7 @@ spec:
       - ServerSideApply=true
   sources:
     - chart: cert-manager
-      repoURL: quay.io/jetstack
+      repoURL: https://charts.jetstack.io
       targetRevision: 1.19.3
       helm:
         valuesObject:

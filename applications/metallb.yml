@@ -29,6 +29,7 @@ spec:
   sources:
     - chart: metallb/metallb
       repoURL: https://metallb.github.io/metallb
+      targetRevision: 0.0.0
       helm:
         valuesObject:
           crds:
