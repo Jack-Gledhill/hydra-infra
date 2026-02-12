@@ -36,4 +36,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: local-path-provisioner-config
+            name: local-path-config
