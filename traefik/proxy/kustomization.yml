@@ -8,6 +8,7 @@ labels:
     includeSelectors: true
 resources:
   - rbac.yml
+  - network-policy.yml
   - config-map.yml
   - deployment.yml
   - pod-disruption-budget.yml
