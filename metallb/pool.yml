@@ -6,4 +6,4 @@ metadata:
     app.kubernetes.io/name: metallb
 spec:
   addresses:
-    - 10.1.1.0/16
+    - 10.1.1.0/24
